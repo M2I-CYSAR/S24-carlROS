@@ -12,7 +12,7 @@ from cysar.msg import ArmPosition
 from SparkCANLib.SparkCAN import SparkBus
 import RPi.GPIO as GPIO
 
-# CAN IDs for Flipper Controllers
+# CAN IDs for Arm Controllers
 SHOULDER_RMOTOR = 31
 SHOULDER_AMOTOR = 32
 ELBOW_AMOTOR = 33

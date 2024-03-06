@@ -11,7 +11,7 @@ Date: 10/21/23
 
 import rclpy
 from rclpy.node import Node
-from cysar.msg import Joystick, DriveTrain, FlipperPosition, ArmPosition
+from cysar.msg import Joystick, DriveTrain, ArmPosition
 import numpy as np
 
 class Teleop(Node):
@@ -24,22 +24,20 @@ class Teleop(Node):
         # Variables
         self.joystick = Joystick()
         self.drive_train = DriveTrain()
-        self.flipper_position = FlipperPosition()
+        # Removed Flipper Positioning
         self.arm_position = ArmPosition()
         self.mode : str = "Drive"
 
         # Publisher/Subscribers
         self.drive_train_publisher = self.create_publisher(DriveTrain, 'drive_train', 10)
-        self.flipper_position_publisher = self.create_publisher(FlipperPosition, 'flipper_position', 10)
+        # Removed Flipper Publisher
         self.arm_position_publisher = self.create_publisher(ArmPosition, 'arm_position', 10)
         self.joystick_subscription = self.create_subscription(Joystick, 'joystick', self.listener, 10)
 
         # Paramerters   
         self.declare_parameter('deadzone', '0.05')
         self.declare_parameter('max_speed', '1.0')
-        self.declare_parameter('flipper_sensitivity', '1.0')
-        self.declare_parameter('flipper_min', '-14.0')
-        self.declare_parameter('flipper_max', '14.0')
+        # Removed Flipper Param Declaration 
         self.declare_parameter('shoulder_rotation_min', '-1.0')
         self.declare_parameter('shoulder_rotation_max', '1.0')
         self.declare_parameter('shoulder_rotation_sensitivity', '0.1')
@@ -53,9 +51,7 @@ class Teleop(Node):
         self.declare_parameter('wrist_angle_speed', '1.0')
         self.deadzone = self.get_parameter('deadzone').get_parameter_value().double_value
         self.max_speed = self.get_parameter('max_speed').get_parameter_value().double_value
-        self.flipper_sensitivity = self.get_parameter('flipper_sensitivity').get_parameter_value().double_value
-        self.flipper_min = self.get_parameter('flipper_min').get_parameter_value().double_value
-        self.flipper_max = self.get_parameter('flipper_max').get_parameter_value().double_value
+        # Removed Flipper Param Declaration
         self.shoulder_rotation_min = self.get_parameter('shoulder_rotation_min').get_parameter_value().double_value
         self.shoulder_rotation_max = self.get_parameter('shoulder_rotation_max').get_parameter_value().double_value
         self.shoulder_rotation_sensitivity = self.get_parameter('shoulder_rotation_sensitivity').get_parameter_value().double_value
@@ -70,9 +66,6 @@ class Teleop(Node):
         self.get_logger().info(f"""
 deadzone: {self.deadzone}, 
 max_speed: {self.max_speed}, 
-flipper_sensitivity: {self.flipper_sensitivity}, 
-flipper_min: {self.flipper_min}, 
-flipper_max: {self.flipper_max},
 shoulder_rotation_min: {self.shoulder_rotation_min},
 shoulder_rotation_max: {self.shoulder_rotation_max},
 shoulder_rotation_sensitivity: {self.shoulder_rotation_sensitivity},
@@ -85,6 +78,7 @@ elbow_angle_sensitivity: {self.elbow_angle_sensitivity},
 wrist_rotation_speed: {self.wrist_rotation_speed},
 wrist_angle_speed: {self.wrist_angle_speed},
 """)
+# Removed Flipper Param Logger
         
     def listener(self, msg : Joystick) -> None:
         """
@@ -109,13 +103,11 @@ wrist_angle_speed: {self.wrist_angle_speed},
         # Update values depending on the mode
         if self.mode == "Drive":
             self.drive_train_update()
-            self.flipper_position_update()
         elif self.mode == "Arm":
             self.arm_position_update()
 
         # Publish them
         self.drive_train_publisher.publish(self.drive_train)
-        self.flipper_position_publisher.publish(self.flipper_position)
         self.arm_position_publisher.publish(self.arm_position)
 
     def drive_train_update(self) -> None:
@@ -138,30 +130,7 @@ wrist_angle_speed: {self.wrist_angle_speed},
         self.drive_train.front_right = self.max_speed * percent_right
         self.drive_train.back_right = self.max_speed * percent_right
 
-    def flipper_position_update(self) -> None:
-        """
-        Uses saved joystick values to publish the new flipper positions.
-        """
-        if abs(self.joystick.stick_right_y) > self.deadzone:
-            # Move flipper values based on joystick
-            self.flipper_position.front_left += float(self.joystick.stick_right_y * self.joystick.bumper_left * self.flipper_sensitivity)
-            self.flipper_position.front_right += float(self.joystick.stick_right_y * self.joystick.bumper_right * self.flipper_sensitivity)
-            self.flipper_position.back_left += float(self.joystick.stick_right_y * (self.joystick.trigger_left > self.deadzone) * self.flipper_sensitivity)
-            self.flipper_position.back_right += float(self.joystick.stick_right_y * (self.joystick.trigger_right > self.deadzone) * self.flipper_sensitivity)
-
-            # Clip them if above or below min max (front flippers not clipped for full mobility)
-            #self.flipper_position.front_left = float(np.clip(self.flipper_position.front_left, self.flipper_min, self.flipper_max))
-            #self.flipper_position.front_right = float(np.clip(self.flipper_position.front_right, self.flipper_min, self.flipper_max))
-            self.flipper_position.back_left = float(np.clip(self.flipper_position.back_left, self.flipper_min, self.flipper_max))
-            self.flipper_position.back_right = float(np.clip(self.flipper_position.back_right, self.flipper_min, self.flipper_max))
-
-        # Send to zero if start is pressed
-        if self.joystick.button_start:
-            self.flipper_position.front_left += float(-np.sign(self.flipper_position.front_left) * self.flipper_sensitivity)
-            self.flipper_position.front_right += float(-np.sign(self.flipper_position.front_right) * self.flipper_sensitivity)
-            self.flipper_position.back_left += float(-np.sign(self.flipper_position.back_left) * self.flipper_sensitivity)
-            self.flipper_position.back_right += float(-np.sign(self.flipper_position.back_right) * self.flipper_sensitivity)
-
+    # Removed Flipper_Position_Update
     def arm_position_update(self) -> None:
         """
         Uses saved joystick values to publish the new arm positions.
