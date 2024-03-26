@@ -39,14 +39,14 @@ find_package(rosidl_default_generators REQUIRED)
 set(rel_msg_files "")
 file(GLOB msg_files msg/*.msg)
 foreach(file ${msg_files})
-  file(RELATIVE_PATH rel_msg_path "{CMAKE_CURRENT_SOURCE_DIR}/../carlROS/cysar/" ${file})
+  file(RELATIVE_PATH rel_msg_path "/home/ecabelin/S24carlROS/cysar" ${file})
   set(rel_msg_files "${rel_msg_files}" "${rel_msg_path}")
 endforeach()
 
 # Build all msg files
 rosidl_generate_interfaces(${PROJECT_NAME}
   ${rel_msg_files}
-  "action/FourSquare.action"
+  ${CMAKE_CURRENT_SOURCE_DIR}:src/action/FourSquare.action
 )
 
 ament_package()
