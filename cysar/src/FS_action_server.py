@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.action import ActionServer
 from rclpy.node import Node
-from src.action import FourSquare 
+from action import FourSquare
 
 
 class FourSquareActionServer(Node):
@@ -49,9 +49,9 @@ class FourSquareActionServer(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    fibonacci_action_server = FourSquareActionServer()
+    FourSquare_action_server = FourSquareActionServer()
 
-    rclpy.spin(fibonacci_action_server)
+    rclpy.spin(FourSquare_action_server)
 
 
 if __name__ == '__main__':
