@@ -39,7 +39,7 @@ find_package(rosidl_default_generators REQUIRED)
 set(rel_msg_files "")
 file(GLOB msg_files msg/*.msg)
 foreach(file ${msg_files})
-  file(RELATIVE_PATH rel_msg_path "~/carlAutoROS/cysar" ${file})
+  file(RELATIVE_PATH rel_msg_path ${CMAKE_CURRENT_SOURCE_DIR} ${file})
   set(rel_msg_files "${rel_msg_files}" "${rel_msg_path}")
 endforeach()
 
