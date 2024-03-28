@@ -1,6 +1,0 @@
-int32 time
---- # Request
-bool completed
---- # Result
-string status
-# Feedback

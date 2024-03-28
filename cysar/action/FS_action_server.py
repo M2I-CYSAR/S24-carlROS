@@ -1,10 +1,10 @@
 import rclpy
 from rclpy.action import ActionServer
 from rclpy.node import Node
-from action import FourSquare
+from cysar.action import Foursquare
+from cysar.msg import Joystick
 
-
-class FourSquareActionServer(Node):
+class FoursquareActionServer(Node):
 
     def __init__(self): # Constructor
         super().__init__('FS_action_server')
@@ -16,7 +16,7 @@ class FourSquareActionServer(Node):
         '''
         self._action_server = ActionServer(
             self,
-            FourSquare,
+            Foursquare,
             'FourSquare',
             self.execute_callback)
 
@@ -28,7 +28,7 @@ class FourSquareActionServer(Node):
     '''
     def execute_callback(self, goal_handle): # Method called - Goal_Handle Param input = time
         self.get_logger().info('Executing goal...')
-        result = FourSquare.Result()
+        result = Foursquare.Result()
         '''
         Action Server will just need to publish data to Joystick.msg.
         This will take testing to get the proper Joystick Values required for changing velocity, especially
@@ -41,17 +41,17 @@ class FourSquareActionServer(Node):
 
         #TODO: Test Case
         # Run an action execution and output new joystick values from terminal.
-
+        print("Hello World")
         goal_handle.succeed() # A method that indicates the goal was successful
         return result # Result should return a boolean for completion
 
-
+# DON'T FORGET TO "source install/setup.bash" BEFORE RUNNING ANYTHING WITH PYTHON
 def main(args=None):
     rclpy.init(args=args)
 
-    FourSquare_action_server = FourSquareActionServer()
+    Foursquare_action_server = FoursquareActionServer()
 
-    rclpy.spin(FourSquare_action_server)
+    rclpy.spin(Foursquare_action_server)
 
 
 if __name__ == '__main__':

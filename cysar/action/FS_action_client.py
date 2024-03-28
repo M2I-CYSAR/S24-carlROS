@@ -2,7 +2,7 @@ import rclpy
 from rclpy.action import ActionClient
 from rclpy.node import Node
 
-from src.action import FourSquare
+from action import FourSquare
 
 
 class FibonacciActionClient(Node):

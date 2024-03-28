@@ -46,7 +46,7 @@ endforeach()
 # Build all msg files
 rosidl_generate_interfaces(${PROJECT_NAME}
   ${rel_msg_files}
-  ${CMAKE_CURRENT_SOURCE_DIR}:src/action/FourSquare.action
+  ${CMAKE_CURRENT_SOURCE_DIR}:action/Foursquare.action
 )
 
 ament_package()
