@@ -1,5 +1,5 @@
-int32 time
+int32 time # Request
 ---
-int32 completed
+bool completed # Result
 ---
-int32 status
+string status # Feedback

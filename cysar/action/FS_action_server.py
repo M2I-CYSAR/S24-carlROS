@@ -3,6 +3,7 @@ from rclpy.action import ActionServer
 from rclpy.node import Node
 from cysar.action import Foursquare
 from cysar.msg import Joystick
+import time
 
 class FoursquareActionServer(Node):
 
@@ -28,7 +29,6 @@ class FoursquareActionServer(Node):
     '''
     def execute_callback(self, goal_handle): # Method called - Goal_Handle Param input = time
         self.get_logger().info('Executing goal...')
-        result = Foursquare.Result()
         '''
         Action Server will just need to publish data to Joystick.msg.
         This will take testing to get the proper Joystick Values required for changing velocity, especially
@@ -38,11 +38,15 @@ class FoursquareActionServer(Node):
         (Terrain) - What factors of the terrain could effect how well a robot maneuvers while automated [could be important
         since we don't want to start an autonoumous program, and the terrain causes the robot to move not as expected] 
         '''
-
-        #TODO: Test Case
         # Run an action execution and output new joystick values from terminal.
-        print("Hello World")
-        goal_handle.succeed() # A method that indicates the goal was successful
+        time_length = time.time + goal_handle
+
+        while time.time() < time_length:
+            self.joystick.stick_left_y = 10
+            self.joystick_publisher.publish(self.joystick)
+
+        goal_handle.succeed() # A method that indicates the goal was successful4
+        result = Foursquare.Result()
         return result # Result should return a boolean for completion
 
 # DON'T FORGET TO "source install/setup.bash" BEFORE RUNNING ANYTHING WITH PYTHON
