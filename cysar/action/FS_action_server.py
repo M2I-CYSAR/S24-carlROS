@@ -42,9 +42,13 @@ class FoursquareActionServer(Node):
         time_length = time.time + goal_handle
 
         while time.time() < time_length:
-            self.joystick.stick_left_y = 10
+            self.joystick.stick_left_y = 1
+            self.get_logger().info(str(self.joystick.stick_left_y))
             self.joystick_publisher.publish(self.joystick)
 
+        # Reset
+        self.joystick.stick_left_y = 0
+        self.joystick_publisher.publish(self.joystick)
         goal_handle.succeed() # A method that indicates the goal was successful4
         result = Foursquare.Result()
         return result # Result should return a boolean for completion
