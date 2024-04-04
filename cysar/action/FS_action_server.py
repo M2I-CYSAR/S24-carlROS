@@ -40,8 +40,8 @@ class FoursquareActionServer(Node):
         '''
         # Run an action execution and output new joystick values from terminal.
         self.get_logger().info(str(goal_handle.request.time))
-        duration = float(goal_handle.request.time)
-        time_length = time.time + duration
+        duration = goal_handle.request.time
+        time_length = float(time.time()) + float(duration)
 
         while time.time() < time_length:
             self.joystick.stick_left_y = 1
