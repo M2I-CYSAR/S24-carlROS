@@ -18,7 +18,7 @@ class FoursquareActionServer(Node):
         self._action_server = ActionServer(
             self,
             Foursquare,
-            'FourSquare',
+            'foursquare',
             self.execute_callback)
 
     ''' 
