@@ -39,8 +39,9 @@ class FoursquareActionServer(Node):
         since we don't want to start an autonoumous program, and the terrain causes the robot to move not as expected] 
         '''
         # Run an action execution and output new joystick values from terminal.
-        time_length = time.time + float(goal_handle)
-
+        duration = float(goal_handle.request.time)
+        time_length = time.time + duration
+        
         while time.time() < time_length:
             self.joystick.stick_left_y = 1
             self.get_logger().info(str(self.joystick.stick_left_y))
