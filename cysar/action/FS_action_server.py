@@ -20,6 +20,8 @@ class FoursquareActionServer(Node):
             Foursquare,
             'foursquare',
             self.execute_callback)
+        self.joystick = Joystick()
+        self.joystick_publisher = self.create_publisher(Joystick, 'joystick', 10)
 
     ''' 
     The Method called to execute an action. This method handles 3 message types.
