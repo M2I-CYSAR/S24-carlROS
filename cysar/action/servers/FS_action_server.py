@@ -1,8 +1,9 @@
 import rclpy
 from rclpy.action import ActionServer
 from rclpy.node import Node
-from cysar.action import Foursquare
+from cysar.action.dotaction import Foursquare
 from cysar.msg import Joystick
+import JoystickGhost
 import time
 
 class FoursquareActionServer(Node):
@@ -20,7 +21,7 @@ class FoursquareActionServer(Node):
             Foursquare,
             'foursquare',
             self.execute_callback)
-        self.joystick = Joystick()
+        self.joystick = JoystickGhost()
         self.joystick_publisher = self.create_publisher(Joystick, 'joystick', 10)
 
     ''' 

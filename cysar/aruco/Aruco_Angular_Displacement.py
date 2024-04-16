@@ -59,7 +59,7 @@ while True:
             # if abs(angular_displacement - past_displacement) > degree_tolerance:
             #     print(angular_displacement)
             #     past_displacement = angular_displacement
-            print(angular_displacement)
+            print(angular_displacement) # Integrate into ROS
             time.sleep(0.5)
 
     cv.imshow("frame", gray_frame)
