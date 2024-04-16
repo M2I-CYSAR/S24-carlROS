@@ -45,14 +45,13 @@ class FoursquareActionServer(Node):
         #self.get_logger().info(str(goal_handle.request.time))
         duration = goal_handle.request.time
         time_length = float(time.time()) + float(duration)
+        combolist = []
+        for x in range (5):
+            combolist.append(['F', 10, time_length])
+            combolist.append(['L', 10, time_length])
+        
+        self.joystick.combo(combolist)
 
-        while time.time() < time_length:
-            self.joystick.stick_left_y = 0.25
-            self.get_logger().info(str(self.joystick.stick_left_y))
-            self.joystick_publisher.publish(self.joystick)
-
-        # Reset
-        self.joystick.stick_left_y = 0.0
         #self.joystick_publisher.publish(self.joystick)
         goal_handle.succeed() # A method that indicates the goal was successful4
         result = Foursquare.Result()

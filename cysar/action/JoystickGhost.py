@@ -10,7 +10,7 @@ class JoystickGhost:
 
     ''' 
     Initial combo theory. Combo could feature an array of inputs, with sub params specifying
-    input intensity and time. [(Action, Time)]
+    input intensity and time. [(Input, Time)]
     '''
     def combo(self, combo):
         for move in combo:
