@@ -45,6 +45,8 @@ class FoursquareActionServer(Node):
         #self.get_logger().info(str(goal_handle.request.time))
         duration = goal_handle.request.time
         time_length = float(time.time()) + float(duration)
+
+        # Inputter
         combolist = []
         for x in range (5):
             combolist.append(['F', 10, time_length])
