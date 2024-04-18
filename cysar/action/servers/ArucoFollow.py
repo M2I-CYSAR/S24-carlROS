@@ -1,14 +1,14 @@
 import rclpy
 from rclpy.action import ActionServer
 from rclpy.node import Node
-from cysar.action.dotaction import Foursquare
+from cysar.msg import ArucoData
 import JoystickGhost
 import time
 
-class FoursquareActionServer(Node):
+class ArucoFollow (Node):
 
     def __init__(self): # Constructor
-        super().__init__('FS_action_server')
+        super().__init__('ArucoFollow')
         '''
         1. ROS 2 node to add the server to.
         2. Type of action
@@ -17,10 +17,11 @@ class FoursquareActionServer(Node):
         '''
         self._action_server = ActionServer(
             self,
-            Foursquare,
-            'foursquare',
+            ArucoFollow,
+            'arucofollow',
             self.execute_callback)
         
+        self.arucodata = ArucoData()
         self.joystick = JoystickGhost()
 
     ''' 
@@ -31,40 +32,40 @@ class FoursquareActionServer(Node):
     '''
     def execute_callback(self, goal_handle): # Method called - Goal_Handle Param input = time
         self.get_logger().info('Executing goal...')
-        '''
-        Action Server will just need to publish data to Joystick.msg.
-        This will take testing to get the proper Joystick Values required for changing velocity, especially
-        in cases where we want to turn the robot in different ways.
-        - Factors to keep in mind.
-        (Time) - How long should a specific joystick input be kept in a position to... [turn left, right, etc.]
-        (Terrain) - What factors of the terrain could effect how well a robot maneuvers while automated [could be important
-        since we don't want to start an autonoumous program, and the terrain causes the robot to move not as expected] 
-        '''
         # Run an action execution and output new joystick values from terminal.
         #self.get_logger().info(str(goal_handle.request.time))
         duration = goal_handle.request.time
         time_length = float(time.time()) + float(duration)
-
-        # Inputter
-        combolist = []
-        for x in range (5):
-            combolist.append(['F', 10, time_length])
-            combolist.append(['L', 10, time_length])
-        
-        self.joystick.combo(combolist)
-
-        #self.joystick_publisher.publish(self.joystick)
+        Aruco_AngleD = self.arucodata.disp_angle
+        Aruco_PointPos = self.arucodata.point_pos
+        neutral_angle = 0 # Adjust for param
+        neutral_pos = 0 # Adjust for param
+        # Test
+        while Aruco_AngleD != neutral_angle:
+            if Aruco_AngleD < neutral_angle:
+                self.joystick.right(0, 0)
+                
+            elif Aruco_AngleD > neutral_angle:
+                self.joystick.left(0, 0)
+                
+        while Aruco_PointPos != neutral_pos:
+            if Aruco_PointPos < neutral_pos:
+                self.joystick.forward(0, 0)
+                
+            elif Aruco_PointPos > neutral_pos:
+                self.joystick.backward(0, 0)
+                
         goal_handle.succeed() # A method that indicates the goal was successful4
-        result = Foursquare.Result()
+        result = ArucoFollow.Result()
         return result # Result should return a boolean for completion
 
 # DON'T FORGET TO "source install/setup.bash" BEFORE RUNNING ANYTHING WITH PYTHON
 def main(args=None):
     rclpy.init(args=args)
 
-    Foursquare_action_server = FoursquareActionServer()
+    Arucofollow_action_server = ArucoFollow()
 
-    rclpy.spin(Foursquare_action_server)
+    rclpy.spin(Arucofollow_action_server)
 
 
 if __name__ == '__main__':
