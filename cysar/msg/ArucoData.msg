@@ -1,2 +1,0 @@
-float32 disp_angle
-float32 point_pos
