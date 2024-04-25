@@ -1,8 +1,8 @@
 import rclpy
 from rclpy.action import ActionServer
 from rclpy.node import Node
-from cysar.action import Foursquare
-from cysar.msg import Joystick
+from cysar.action.dotaction import Foursquare
+import JoystickGhost
 import time
 
 class FoursquareActionServer(Node):
@@ -20,8 +20,8 @@ class FoursquareActionServer(Node):
             Foursquare,
             'foursquare',
             self.execute_callback)
-        self.joystick = Joystick()
-        self.joystick_publisher = self.create_publisher(Joystick, 'joystick', 10)
+        
+        self.joystick = JoystickGhost()
 
     ''' 
     The Method called to execute an action. This method handles 3 message types.
@@ -45,13 +45,14 @@ class FoursquareActionServer(Node):
         duration = goal_handle.request.time
         time_length = float(time.time()) + float(duration)
 
-        while time.time() < time_length:
-            self.joystick.stick_left_y = 0.25
-            self.get_logger().info(str(self.joystick.stick_left_y))
-            self.joystick_publisher.publish(self.joystick)
+        # Inputter
+        combolist = []
+        for x in range (5):
+            combolist.append(['F', 10, time_length])
+            combolist.append(['L', 10, time_length])
+        
+        self.joystick.combo(combolist)
 
-        # Reset
-        self.joystick.stick_left_y = 0.0
         #self.joystick_publisher.publish(self.joystick)
         goal_handle.succeed() # A method that indicates the goal was successful4
         result = Foursquare.Result()
