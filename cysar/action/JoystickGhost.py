@@ -7,8 +7,7 @@ class JoystickGhost:
         self.logger = []
         self.joystick = Joystick()
         self.joystick_publisher = self.create_publisher(Joystick, 'joystick', 10)
-        self.joystick
-
+        
     ''' 
     Initial combo theory. Combo could feature an array of inputs, with sub params specifying
     input intensity and time. [(Input, Time)]
