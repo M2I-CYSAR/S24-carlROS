@@ -4,14 +4,13 @@ import time
 
 class JoystickGhost:
     def __init__(self) -> None:
-        JoyStickList = []
+        self.logger = []
         self.joystick = Joystick()
         self.joystick_publisher = self.create_publisher(Joystick, 'joystick', 10)
-        self.joystick
-
+        
     ''' 
     Initial combo theory. Combo could feature an array of inputs, with sub params specifying
-    input intensity and time. 
+    input intensity and time. [(Input, Time)]
     '''
     def combo(self, combo):
         for move in combo:
@@ -24,6 +23,7 @@ class JoystickGhost:
                 self.left(action[1], action[2])
             elif action[0] == "R":
                 self.right(action[1], action[2])
+            self.log(action)
         
 
     def forward(self, input, time):  
@@ -53,6 +53,12 @@ class JoystickGhost:
     def diagonal(self, input, time):
         pass
 
+    def log(self, input):
+        self.logger.append(input)
+
+    def clear(self):
+        self.logger = []
+
     def reset(self):
         self.joystick.stick_left_x = 0.0
         self.joystick.stick_left_y = 0.0
@@ -77,5 +83,6 @@ class JoystickGhost:
         self.joystick.d_pad_right = False
         self.joystick_publisher.publish(self.joystick)
 
-    def output(self, input, time):
-        pass 
+    def output(self):
+        for move in self.logger:
+            print(move)
