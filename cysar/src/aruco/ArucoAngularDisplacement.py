@@ -17,7 +17,7 @@ Date: 4/17/24
 class ArucoAngularDisplacement(Node):
  
     def __init__(self) -> None:
-        super().__init__('Operator_Interface')
+        super().__init__('ArucoAngularDisplacement')
         self.aruco = ArucoData()
         self.aruco_angle_publisher = self.create_publisher(ArucoData, 'arucodata', 10)
         self.timer = self.create_timer(0.05, self.talker)
