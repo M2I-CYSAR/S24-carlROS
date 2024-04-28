@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.action import ActionServer
 from rclpy.node import Node
-from cysar.action.dotaction import Foursquare
+from cysar.action import Foursquare
 import JoystickGhost
 import time
 

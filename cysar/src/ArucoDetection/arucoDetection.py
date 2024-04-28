@@ -1,12 +1,17 @@
 import cv2 as cv
 from cv2 import aruco
 import numpy as np
+import sys
 
+print("ArucoVersion: ", sys.version)
 # dictionary to specify type of the marker
 marker_dict = aruco.getPredefinedDictionary(aruco.DICT_4X4_50)
 
 # detect the marker
 param_markers = aruco.DetectorParameters()
+
+# DUE TO API CHANGES
+detector = aruco.ArucoDetector(marker_dict, param_markers)
 
 # utilizes default camera/webcam driver
 cap = cv.VideoCapture(0)
@@ -18,7 +23,7 @@ while True:
         break
     # turning the frame to grayscale-only (for efficiency)
     gray_frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-    marker_corners, marker_IDs, reject = aruco.detectMarkers(
+    marker_corners, marker_IDs, reject = detector.detectMarkers(
         gray_frame, marker_dict, parameters=param_markers
     )
     # getting conrners of markers
